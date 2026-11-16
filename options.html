@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>URL Saver for Supabase · Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <img
+          class="hero-icon"
+          src="icons/icon48.png"
+          alt=""
+          width="56"
+          height="56"
+        />
+        <div class="hero-copy">
+          <p class="eyebrow">Chrome extension</p>
+          <h1>URL Saver <span>for Supabase</span></h1>
+          <p class="subtitle">
+            One click on the toolbar icon saves the current page's URL and
+            title to your Supabase database.
+          </p>
+        </div>
+      </header>
+
+      <section class="card" aria-labelledby="connection-heading">
+        <div class="card-head">
+          <div>
+            <h2 id="connection-heading">Connection</h2>
+            <p>Connect the extension to your Supabase project.</p>
+          </div>
+          <span id="config-state" class="pill is-empty">Not configured</span>
+        </div>
+
+        <form id="config-form" novalidate>
+          <div class="field">
+            <label for="project-url">Project URL</label>
+            <input
+              id="project-url"
+              name="project-url"
+              type="text"
+              inputmode="url"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="https://abcdefgh.supabase.co"
+              aria-describedby="project-url-hint project-url-error"
+            />
+            <p id="project-url-hint" class="hint">
+              Find it in Supabase under <strong>Settings → API Keys</strong>.
+            </p>
+            <p id="project-url-error" class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <label for="api-key">Publishable / anon key</label>
+            <div class="input-wrap">
+              <input
+                id="api-key"
+                name="api-key"
+                type="password"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="sb_publishable_… or eyJhbGci…"
+                aria-describedby="api-key-hint api-key-error"
+              />
+              <button
+                id="key-toggle"
+                class="input-action"
+                type="button"
+                aria-label="Show API key"
+                aria-pressed="false"
+              >
+                Show
+              </button>
+            </div>
+            <p id="api-key-hint" class="hint">
+              Use the <strong>publishable</strong> key (or the legacy
+              <strong>anon</strong> key), never a <code>service_role</code> or
+              <code>sb_secret_</code> key.
+            </p>
+            <p id="api-key-error" class="field-error" hidden></p>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Save settings</button>
+            <button id="test-button" class="btn btn-secondary" type="button">
+              Test connection
+            </button>
+          </div>
+          <p
+            id="form-status"
+            class="form-status"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></p>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="setup-heading">
+        <div class="card-head">
+          <div>
+            <h2 id="setup-heading">Set up Supabase</h2>
+            <p>First time here? Four short steps.</p>
+          </div>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <div class="step-body">
+              <h3>Create a Supabase project</h3>
+              <p>
+                Sign in and create a free project at
+                <a
+                  href="https://supabase.com/dashboard"
+                  target="_blank"
+                  rel="noreferrer"
+                  >supabase.com/dashboard</a
+                >.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="step-body">
+              <h3>Create the table</h3>
+              <p>
+                Open the
+                <a
+                  id="open-sql"
+                  href="https://supabase.com/dashboard"
+                  target="_blank"
+                  rel="noreferrer"
+                  >SQL editor</a
+                >, paste the schema below, and run it. It creates
+                <code>public.saved_urls</code> with Row Level Security and
+                insert-only access for the public key.
+              </p>
+              <div class="code-block">
+                <button id="copy-schema" class="btn btn-copy" type="button">
+                  Copy SQL
+                </button>
+                <pre><code id="schema-code">Loading schema…</code></pre>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="step-body">
+              <h3>Copy your API credentials</h3>
+              <p>
+                In
+                <a
+                  id="open-api"
+                  href="https://supabase.com/dashboard"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Settings → API Keys</a
+                >, copy the <strong>Project URL</strong> and the
+                <strong>publishable</strong> key (or the legacy
+                <strong>anon</strong> key) into the form above.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="step-body">
+              <h3>Save pages with one click</h3>
+              <p>
+                Pin the extension, then click its toolbar icon on any page. A
+                green <strong>✓</strong> badge means the row was inserted. Check
+                your data in the
+                <a
+                  id="open-table"
+                  href="https://supabase.com/dashboard"
+                  target="_blank"
+                  rel="noreferrer"
+                  >table editor</a
+                >.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="card" aria-labelledby="activity-heading">
+        <div class="card-head">
+          <div>
+            <h2 id="activity-heading">Recent activity</h2>
+            <p>Stored locally in this browser, not in Supabase.</p>
+          </div>
+          <button
+            id="clear-history"
+            class="btn btn-ghost btn-small"
+            type="button"
+          >
+            Clear
+          </button>
+        </div>
+
+        <div id="last-result" class="last-result is-empty">
+          <p>No saves yet. Click the extension icon on any page to save it.</p>
+        </div>
+
+        <ul id="history-list" class="history-list" hidden></ul>
+      </section>
+
+      <footer class="footer">
+        <p>
+          Your project URL and public key are stored in Chrome’s synced storage.
+          The publishable (or legacy anon) key is safe to expose — Row Level
+          Security is what protects your data.
+        </p>
+        <p class="footer-meta">
+          URL Saver for Supabase · v<span id="version">1.0.0</span>
+        </p>
+      </footer>
+    </main>
+
+    <script src="options.js"></script>
+  </body>
+</html>
